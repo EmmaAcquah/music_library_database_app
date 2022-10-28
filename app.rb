@@ -16,13 +16,14 @@ class Application < Sinatra::Base
 
   get '/albums' do
     repo = AlbumRepository.new
-    albums = repo.all
+    @albums = repo.all
 
-    response = albums.map do |album|
-      album.title
-    end.join(', ')
+    #response = albums.map do |album|
+     # album.title + ", "
 
-    return response
+     return erb(:albums)
+    #end #.join(', ')
+
   end
 
   get '/artists' do
@@ -34,12 +35,23 @@ class Application < Sinatra::Base
     end.join(', ')
   end
 
-  get '/album/:id' do
+  get '/albums/:id' do
     repo = AlbumRepository.new
-    album = Album.new
-    album.id = params[:id]
-    album.title = params[:title]
-    album.release_year = params[:release_year]
+    artist_repo = ArtistRepository.new
+    #album = Album.new
+    # album.id = params[:id]
+    # album.title = params[:title]
+    # album.release_year = params[:release_year]
+    @album = repo.find(params[:id])
+    @artist = artist_repo.find(@album.artist_id)
+
+    return erb(:album)
+
+  end
+
+  get '/artists/:id' do
+    repo = ArtistRepository.new
+    @artist = repo.find(params[:id])
 
   end
 

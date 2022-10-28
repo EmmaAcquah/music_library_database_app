@@ -1,4 +1,4 @@
-# {{ METHOD }} {{ PATH}} Route Design Recipe
+# GET /albums Route Design Recipe
 
 _Copy this design recipe template to test-drive a Sinatra route._
 
@@ -7,8 +7,8 @@ _Copy this design recipe template to test-drive a Sinatra route._
 You'll need to include:
   * the HTTP method
   * the path
-  * any query parameters (passed in the URL)
-  * or body parameters (passed in the request body)
+  * any query parameters (passed in the URL) - None
+  * or body parameters (passed in the request body) - None
 
   Method: GET
   path: /albums
@@ -29,6 +29,8 @@ Surfer Rosa
 OK Computer
 ```
 
+return title and release_year fields for all album records embedded in HTML
+
 ## 3. Write Examples
 
 _Replace these with your own design._
@@ -42,18 +44,11 @@ Expected response:
 
 200 OK
 
-Doolittle
-Surfer Rosa
-Waterloo
-Super Trouper
-Bossanova
-Lover
-Folklore
-I Put a Spell on You
-Baltimore
-Here Comes the Sun
-Fodder on My Wings
-Ring Ring
+Looop through each album in the table displlaying Title & Release YEar
+
+
+
+
 
 ```
 
@@ -70,20 +65,27 @@ describe Application do
 
   let(:app) { Application.new }
 
-  context "GET /" do
-    it 'returns 200 OK' do
-      # Assuming the post with id 1 exists.
-      response = get('/posts?id=1')
-
-      expect(response.status).to eq(200)
-      # expect(response.body).to eq(expected_response)
+  context "GET /albums" do
+    it "returns the title and release year for all albums" do
+      response = get('/albums')
+      expected_response = '<div>
+      Title: Doolittle
+      Released: 1989
+    </div>'
+      
+      expect(response.status).to eq 200
+      expect(response.body).to include expected_response
     end
+  end
 
-    it 'returns 404 Not Found' do
-      response = get('/posts?id=276278')
+    it "should return links for each the albums" do
+      response = get('/albums')
 
-      expect(response.status).to eq(404)
-      # expect(response.body).to eq(expected_response)
+      expect(response.status).to eq 200
+      expect(response.body).to include <a href="/albums/2">Surfer Rosa</a>
+      expect(response.body).to include <a href="/albums/3">Waterloo</a>
+      expect(response.body).to include <a href="/albums/4">Super Trouper</a>
+      expect(response.body).to include <a href="/albums/4">Bossanova</a>
     end
   end
 end

@@ -1,0 +1,14 @@
+<html>
+    <head></head>
+    <body>
+        <h1><%= @album.title %></h1>
+        <div>
+            <p>
+            Title: <%= @album.title %> </br>
+            Released: <%= @album.release_year %> </br>
+            Artist: <%= @artist.name %> </br>
+            <a href="/albums/<%= @album.id %>"><%= @album.title %></a>
+            </p>
+        </div>
+    </body>
+</html>

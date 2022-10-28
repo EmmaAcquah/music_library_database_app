@@ -13,28 +13,43 @@ describe Application do
   context "GET /albums" do
     it "returns the list of albums" do
       response = get('/albums')
-      expected_response = 'Doolittle, Surfer Rosa, Waterloo, Super Trouper, Bossanova, Lover, Folklore, I Put a Spell on You, Baltimore, Here Comes the Sun, Fodder on My Wings, Ring Ring'
+      expected_title = 'Title: Surfer Rosa'
+      expected_year = 'Released: 1988'
       
       expect(response.status).to eq 200
-      expect(response.body).to eq expected_response
+      expect(response.body).to include expected_title
+      expect(response.body).to include expected_year
     end
+  
+
+  it "should return links for each the albums" do
+    response = get('/albums')
+
+    expect(response.status).to eq 200
+    expect(response.body).to include('<a href="/albums/2">Surfer Rosa</a>')
+    expect(response.body).to include('<a href="/albums/3">Waterloo</a>')
+    expect(response.body).to include('<a href="/albums/4">Super Trouper</a>')
+    expect(response.body).to include('<a href="/albums/5">Bossanova</a>')
   end
+
+end
 
   context "GET /album/:id" do
     it "returns the album with id 1" do
-        response = get('/album/1')
+        response = get('/albums/1')
 
         expect(response.status).to eq 200
-        expect(response.body).to include '<h1>Doolittle</h1>'
-        expect(response.body).to include '<p> Release year: 1988   Artist: Pixies </p>'
+        expect(response.body).to include 'Doolittle'
+        expect(response.body).to include 'Released: 1989'
 
     end
   end
 
   context "POST /albums" do
-    it "creates an album named Voyage, release year 2022 and artist id 2" do
-        response = post('/albums', title: 'Voyage', release_year: '2022', artist_id: '2')
+    it "creates a new album record" do
+        response = post('/albums', title: 'Voyage', release_year: '2022', artist_id: '5')
         expect(response.status).to eq 200
+        expect(response.body).to eq ''
 
         response_get = get('/albums')
         expect(response_get.status).to eq 200
@@ -43,13 +58,23 @@ describe Application do
   end
 
   context "GET /artists" do
-    xit "returns all the artists" do
+    it "returns all the artists" do
         response = get('/artists')
 
         expect(response.status).to eq 200
-        expect(response.body).to eq "Pixies, ABBA, Taylor Swift, Nina Simone, Kiasmos"
+        expect(response.body).to eq "Pixies, ABBA, Taylor Swift, Nina Simone"
     end
     
+  end
+
+  context "GET /artists/:id" do
+    it "returns a 200 response and details for a single artist" do
+      response = get("/artists/2")
+      
+      expect(response.status).to eq 200
+      expect(response.body).to include("Artist: ABBA")
+      #expect(response.body).to include("Genre: Pop")
+    end
   end
   
 
