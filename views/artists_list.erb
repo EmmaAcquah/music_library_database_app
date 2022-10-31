@@ -1,0 +1,19 @@
+<html>
+  <head></head>
+  <body>
+    <h1>Artists</h1>
+
+    <div>
+  <% @artists.each do |artist| %> <!-- use the @artists variable defined in the get artists method -->
+    <p>
+      Name: <a href="/artists/<%= artist.name %>"><%= artist.name %></a>
+      </br>
+      Genre: <%= artist.genre %>
+      </br>
+
+    </p>
+  <% end %>
+    </div>
+
+</body>
+</html>

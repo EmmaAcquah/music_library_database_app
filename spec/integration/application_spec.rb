@@ -26,15 +26,34 @@ describe Application do
 
 
   context "GET /artists" do
-    it "returns the list of all artists" do
-      response = get('/artists')
-      artist_list = 'Pixies, ABBA, Taylor Swift, Nina Simone'
+    # it "returns the list of all artists" do
+    #   response = get('/artists')
+    #   artist_list = 'Pixies, ABBA, Taylor Swift, Nina Simone'
       
-      expect(response.status).to eq 200
-      expect(response.body).to include artist_list
+    #   expect(response.status).to eq 200
+    #   expect(response.body).to include artist_list
 
+    # end
+
+    it 'returns a page with a link to each album page' do
+      response = get('artists')
+
+      expect(response.status).to eq 200
+      expect(response.body).to include('Name: <a href="/artists/Pixies">Pixies</a>')
+      expect(response.body).to include('Name: <a href="/artists/ABBA">ABBA</a>')
+      expect(response.body).to include('Name: <a href="/artists/Taylor Swift">Taylor Swift</a>')
+      expect(response.body).to include('Name: <a href="/artists/Nina Simone">Nina Simone</a>')
     end
 
+  end
+
+  context 'GET /albums/new' do
+    xit 'returns the form to add a new album' do
+    response = get('albums/new')
+
+    expect(response.status).to eq 200
+
+    end
   end
 
   context "GET /albums" do
@@ -111,9 +130,9 @@ describe Application do
     end
   end
 
-  context "GET /album/:id" do
+  context "GET /albums/:id" do
     it "returns the album with id 1" do
-      response = get('/album/1')
+      response = get('/albums/1')
 
       expect(response.status).to eq 200
       expect(response.body).to include '<h1>Doolittle</h1>'
@@ -122,9 +141,9 @@ describe Application do
     end
   end
 
-  context "GET /artist/:id" do
+  context "GET /artists/:id" do
     it "returns the artist with id 2" do
-      response = get('/artist/2')
+      response = get('/artists/2')
 
       expect(response.status).to eq 200
       expect(response.body).to include '<h1>ABBA</h1>'
